@@ -21,9 +21,11 @@ export default eventHandler(async (event) => {
       const newLink = _linkUrl[0]
       let linkQs = { ...qs.parse(search?.replaceAll('?', '')) }
       if (_linkUrl?.[1]) {
+        console.log(linkQs, _linkUrl)
         linkQs = { ...linkQs, ...qs.parse(`${_linkUrl[1]}`) }
+        console.log(linkQs)
       }
-      const _link = {
+      const _link: z.infer<typeof LinkSchema> = {
         ...link,
         url: `${newLink}?${qs.stringify(linkQs)}`,
       }
