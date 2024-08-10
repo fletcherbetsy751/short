@@ -34,8 +34,8 @@ export default eventHandler(async (event) => {
       catch (error) {
         console.error('Failed write access log:', error)
       }
-      console.log({ status: 'pass trycatch', link })
-      return sendRedirect(event, link.url, +useRuntimeConfig(event).redirectStatusCode)
+      console.log({ status: 'pass trycatch', _link })
+      return sendRedirect(event, _link.url, +useRuntimeConfig(event).redirectStatusCode)
     }
   }
 })
