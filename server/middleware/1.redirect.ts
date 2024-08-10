@@ -17,16 +17,17 @@ export default eventHandler(async (event) => {
     const link: z.infer<typeof LinkSchema> | null = await KV.get(`link:${slug}`, { type: 'json' })
 
     if (link) {
-      const _link = link.url.split('?')
-      const newLink = _link[0]
-      console.log({ newLink })
+      const _linkUrl = link.url.split('?')
+      const newLink = _linkUrl[0]
       let linkQs = { ...qs.parse(search?.replaceAll('?', '')) }
-      if (_link[1]) {
-        linkQs = { ...linkQs, ...qs.parse(`${_link[1]}`) }
+      if (_linkUrl?.[1]) {
+        linkQs = { ...linkQs, ...qs.parse(`${_linkUrl[1]}`) }
       }
-      link.url = `${newLink}?${qs.stringify(linkQs)}`
-      console.log({ link })
-      event.context.link = link
+      const _link = {
+        ...link,
+        url: `${newLink}?${qs.stringify(linkQs)}`,
+      }
+      event.context.link = _link
       try {
         await useAccessLog(event)
       }
