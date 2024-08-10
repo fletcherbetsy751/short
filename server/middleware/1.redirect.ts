@@ -18,16 +18,15 @@ export default eventHandler(async (event) => {
 
     if (link) {
       const _linkUrl = link.url.split('?')
-      const newLink = _linkUrl[0]
+      const newLink = new URL(_linkUrl[0])
       let linkQs = search ? qs.parse(search.replaceAll('?', '')) : {}
-      console.log('1', linkQs, _linkUrl, search)
       if (_linkUrl?.[1]) {
         linkQs = { ...linkQs, ...qs.parse(`${_linkUrl[1]}`) }
-        console.log('2', linkQs)
       }
+      newLink.search = qs.stringify(linkQs)
       const _link: z.infer<typeof LinkSchema> = {
         ...link,
-        url: `${newLink}${qs.stringify(linkQs)}`,
+        url: newLink.toString(),
       }
       event.context.link = _link
       try {
