@@ -19,12 +19,13 @@ export default eventHandler(async (event) => {
     if (link) {
       const _link = link.url.split('?')
       const newLink = _link[0]
+      console.log(newLink)
       let linkQs = { ...qs.parse(search?.replaceAll('?', '')) }
       if (_link[1]) {
         linkQs = { ...linkQs, ...qs.parse(`${_link[1]}`) }
       }
       link.url = `${newLink}?${qs.stringify(linkQs)}`
-
+      console.log(link)
       event.context.link = link
       try {
         await useAccessLog(event)
